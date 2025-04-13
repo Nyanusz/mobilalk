@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="hu.szte.nyanusz.mobilalk" />
+                  <option name="mobileSdkAppId" value="1:14218171752:android:ae28f2333671a544a472dd" />
+                  <option name="projectId" value="musicshare-73fc484c" />
+                  <option name="projectNumber" value="14218171752" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

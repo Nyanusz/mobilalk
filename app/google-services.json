@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "14218171752",
+    "project_id": "musicshare-73fc484c",
+    "storage_bucket": "musicshare-73fc484c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14218171752:android:ae28f2333671a544a472dd",
+        "android_client_info": {
+          "package_name": "hu.szte.nyanusz.mobilalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14218171752-6rv1nucnjfj0fvt6cmnsce7rurh8gna1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.szte.nyanusz.mobilalk",
+            "certificate_hash": "fa0de77f611011ad1bd53fed358664882764d69c"
+          }
+        },
+        {
+          "client_id": "14218171752-ebkr0lk5gpi55fc377hfg5p3ki1229b8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA3tabfTPfbRMM0CHNZ-r2a4md-z1lMnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14218171752-ebkr0lk5gpi55fc377hfg5p3ki1229b8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
