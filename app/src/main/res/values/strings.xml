@@ -15,8 +15,8 @@
     <string name="anonymousUser">Vendég felhasználó!</string>
     <string name="dummy_text">Dummy Text</string>
     <string name="pressBackAgain">A kilépéshez mégegyszer nyomd meg a vissza gombot!</string>
-    <string name="song_title">Song Title</string>
-    <string name="song_artist">Song Artist</string>
+    <string name="song_title">Zene Címe</string>
+    <string name="song_artist">Zene Előadója</string>
     <string name="song_duration">99:59</string>
     <string name="musicUpload">Zene feltöltése</string>
     <string name="logout">Kilépés</string>
@@ -30,9 +30,11 @@
     <string name="musicTitle">Zene címe</string>
     <string name="startOfSong">00:00</string>
     <string name="uploadedBy">"Feltöltötte: %1$s"</string>
-    <string name="chooseAlbumArtText">Albumkép cseréje...</string>
+    <string name="chooseAlbumArtText">Albumkép cseréje…</string>
     <string name="modify">Frissítés</string>
     <string name="idString">ID: %1$s</string>
     <string name="search">Keresés</string>
-
+    <string name="edit_song">Szerkesztés</string>
+    <string name="save_changes">Mentés</string>
+    <string name="delete_song">Töröl</string>
 </resources>

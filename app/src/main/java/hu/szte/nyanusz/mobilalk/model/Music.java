@@ -1,85 +1,56 @@
 package hu.szte.nyanusz.mobilalk.model;
 
-import android.net.Uri;
-import com.google.firebase.firestore.PropertyName;
-
 public class Music {
-    private String firebaseId;
-    private String mufaj;
+    private String id;
     private String cim;
     private String eloado;
-    private String feltoltoID;
-    private int hossz;
-    private Uri albumArtUri;
+    private String mufaj;
+    private String albumNev;
+    private int duration;
+    private String mp3Url;
+    private String albumArtUri;
+    private boolean likeolt;
+    private String feltolto;
+    private String firebaseId;
 
-    // Üres konstruktor a Firestore számára
     public Music() {
     }
 
-    // Getterek és setterek
-    public String getFirebaseId() {
-        return firebaseId;
-    }
-
-    public void setFirebaseId(String firebaseId) {
-        this.firebaseId = firebaseId;
-    }
-
-    @PropertyName("mufaj")
-    public String getMufaj() {
-        return mufaj;
-    }
-
-    @PropertyName("mufaj")
-    public void setMufaj(String mufaj) {
-        this.mufaj = mufaj;
-    }
-
-    @PropertyName("cim")
-    public String getCim() {
-        return cim;
-    }
-
-    @PropertyName("cim")
-    public void setCim(String cim) {
+    public Music(String id, String cim, String eloado, String mufaj, String albumNev, int duration,
+                 String mp3Url, String albumArtUri, boolean likeolt, String feltolto) {
+        this.id = id;
         this.cim = cim;
-    }
-
-    @PropertyName("eloado")
-    public String getEloado() {
-        return eloado;
-    }
-
-    @PropertyName("eloado")
-    public void setEloado(String eloado) {
         this.eloado = eloado;
-    }
-
-    @PropertyName("feltoltoID")
-    public String getFeltoltoID() {
-        return feltoltoID;
-    }
-
-    @PropertyName("feltoltoID")
-    public void setFeltoltoID(String feltoltoID) {
-        this.feltoltoID = feltoltoID;
-    }
-
-    @PropertyName("hossz")
-    public int getHossz() {
-        return hossz;
-    }
-
-    @PropertyName("hossz")
-    public void setHossz(int hossz) {
-        this.hossz = hossz;
-    }
-
-    public Uri getAlbumArtUri() {
-        return albumArtUri;
-    }
-
-    public void setAlbumArtUri(Uri albumArtUri) {
+        this.mufaj = mufaj;
+        this.albumNev = albumNev;
+        this.duration = duration;
+        this.mp3Url = mp3Url;
         this.albumArtUri = albumArtUri;
+        this.likeolt = likeolt;
+        this.feltolto = feltolto;
     }
+
+    // Getterek és setterek
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getCim() { return cim; }
+    public void setCim(String cim) { this.cim = cim; }
+    public String getEloado() { return eloado; }
+    public void setEloado(String eloado) { this.eloado = eloado; }
+    public String getMufaj() { return mufaj; }
+    public void setMufaj(String mufaj) { this.mufaj = mufaj; }
+    public String getAlbumNev() { return albumNev; }
+    public void setAlbumNev(String albumNev) { this.albumNev = albumNev; }
+    public int getDuration() { return duration; }
+    public void setDuration(int duration) { this.duration = duration; }
+    public String getMp3Url() { return mp3Url; }
+    public void setMp3Url(String mp3Url) { this.mp3Url = mp3Url; }
+    public String getAlbumArtUri() { return albumArtUri; }
+    public void setAlbumArtUri(String albumArtUri) { this.albumArtUri = albumArtUri; }
+    public boolean isLikeolt() { return likeolt; }
+    public void setLikeolt(boolean likeolt) { this.likeolt = likeolt; }
+    public String getFeltolto() { return feltolto; }
+    public void setFeltolto(String feltolto) { this.feltolto = feltolto; }
+    public String getFirebaseId() { return firebaseId; }
+    public void setFirebaseId(String firebaseId) { this.firebaseId = firebaseId; }
 }

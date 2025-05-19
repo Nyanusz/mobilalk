@@ -1,29 +1,21 @@
 package hu.szte.nyanusz.mobilalk.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.color.utilities.CorePalette;
+import com.bumptech.glide.Glide;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import hu.szte.nyanusz.mobilalk.R;
 import hu.szte.nyanusz.mobilalk.activity.HomeActivity;
@@ -31,131 +23,98 @@ import hu.szte.nyanusz.mobilalk.model.Music;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHolder> implements Filterable {
 
-    private ArrayList<Music> musicList;
-    private ArrayList<Music> filteredMusicList;
-    private Context context;
-    private int lastPosition = -1;
+    private final HomeActivity context;
+    private List<Music> musicList;
+    private List<Music> musicListFull;
 
-    public MusicAdapter(Context context, ArrayList<Music> musicList) {
-        this.musicList = musicList;
-        this.filteredMusicList = musicList;
+    public MusicAdapter(HomeActivity context, ArrayList<Music> musicList) {
         this.context = context;
+        this.musicList = musicList;
+        this.musicListFull = new ArrayList<>(musicList);
     }
 
     @NonNull
     @Override
-    public MusicAdapter.MusicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MusicViewHolder(LayoutInflater.from(context).inflate(R.layout.music_item, parent, false));
+    public MusicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.music_item, parent, false);
+        return new MusicViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MusicViewHolder holder, int position) {
-        Music currentItem = filteredMusicList.get(position);
+        Music music = musicList.get(position);
+        holder.titleText.setText(music.getCim());
+        holder.artistText.setText(music.getEloado());
+        holder.durationText.setText(formatDuration(music.getDuration()));
 
-        holder.bindTo(currentItem);
-
-        if (holder.getAdapterPosition() > lastPosition) {
-            holder.itemView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_in));
-            lastPosition = holder.getAdapterPosition();
+        String albumArtUri = music.getAlbumArtUri();
+        if (albumArtUri != null && !albumArtUri.isEmpty()) {
+            Glide.with(context)
+                    .load(albumArtUri)
+                    .error(R.drawable.baseline_album_64)
+                    .into(holder.albumArtImage);
+        } else {
+            holder.albumArtImage.setImageResource(R.drawable.baseline_album_64);
         }
+
+        holder.itemView.setOnClickListener(v -> context.showMusicInfo(music));
     }
 
     @Override
     public int getItemCount() {
-        return filteredMusicList.size();
+        return musicList.size();
     }
 
+    private String formatDuration(int duration) {
+        // A duration másodpercben van, átalakítjuk perc:másodperc formátummá
+        int minutes = duration / 60;
+        int seconds = duration % 60;
+        return String.format("%d:%02d", minutes, seconds);
+    }
+
+    @Override
     public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
-                ArrayList<Music> filteredList = new ArrayList<>();
-                if (constraint == null || constraint.length() == 0) {
-                    filterResults.count = musicList.size();
-                    filterResults.values = musicList;
-                } else {
-                    String filterPattern = constraint.toString().toLowerCase().trim();
-                    for (Music music : musicList) {
-                        if (music.getCim().toLowerCase().contains(filterPattern) || music.getEloado().toLowerCase().contains(filterPattern)) {
-                            filteredList.add(music);
-                        }
-                    }
-
-                    filterResults.count = filteredList.size();
-                    filterResults.values = filteredList;
-                }
-
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                filteredMusicList = (ArrayList<Music>) results.values;
-                notifyDataSetChanged();
-            }
-        };
+        return musicFilter;
     }
 
-    public static class MusicViewHolder extends RecyclerView.ViewHolder {
+    private final Filter musicFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Music> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(musicListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Music item : musicListFull) {
+                    if (item.getCim().toLowerCase().contains(filterPattern) ||
+                            item.getEloado().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
 
-        private final ImageView albumArt;
-        private final TextView songTitle;
-        private final TextView songArtist;
-        private final TextView songDuration;
-        private final View songCard;
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            musicList.clear();
+            musicList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    static class MusicViewHolder extends RecyclerView.ViewHolder {
+        ImageView albumArtImage;
+        TextView titleText, artistText, durationText;
 
         public MusicViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            albumArt = itemView.findViewById(R.id.albumArtImage);
-            songTitle = itemView.findViewById(R.id.songTitle);
-            songArtist = itemView.findViewById(R.id.songArtist);
-            songDuration = itemView.findViewById(R.id.songDuration);
-            songCard = itemView.findViewById(R.id.songCard);
-
-        }
-
-        @SuppressLint("DefaultLocale")
-        void bindTo(@NonNull Music music) {
-            songTitle.setText(music.getCim());
-            songArtist.setText(music.getEloado());
-            songDuration.setText(String.format("%02d:%02d", music.getHossz() / 60, music.getHossz() % 60));
-            System.out.println(songDuration);
-            albumArt.setImageResource(R.drawable.baseline_album_64);
-            songCard.setBackgroundColor(0x000000);
-            itemView.setOnClickListener(view -> {
-                ((HomeActivity) view.getContext()).showMusicInfo(music);
-            });
-            /*
-            if (music.getAlbumArtUri() != null) {
-                Glide.with(itemView.getContext())
-                        .asBitmap()
-                        .load(music.getAlbumArtUri())
-                        .into(new CustomTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                albumArt.setImageBitmap(resource);
-                                Palette.from(resource).generate(palette -> {
-                                    int defaultValue = 0x000000;
-                                    int mutedColor = palette != null ? palette.getMutedColor(defaultValue) : defaultValue;
-                                    songCard.setBackgroundColor(mutedColor);
-                                });
-                            }
-
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                                albumArt.setImageDrawable(placeholder);
-                            }
-                        });
-            } else {
-                albumArt.setImageResource(R.drawable.baseline_album_64);
-            }
-            itemView.setOnClickListener(view -> {
-                //((HomeActivity) view.getContext()).showMusicInfo(music);
-            });
-
-            */
+            albumArtImage = itemView.findViewById(R.id.albumArtImage);
+            titleText = itemView.findViewById(R.id.songTitle);
+            artistText = itemView.findViewById(R.id.songArtist);
+            durationText = itemView.findViewById(R.id.songDuration);
         }
     }
 }
